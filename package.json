@@ -3,10 +3,18 @@
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts"
+    "dev-api": "bun run --watch api/src/index.ts",
+    "dev-worker": "bun run --watch worker/src/index.ts",
+    "docker:up": "docker compose up --build",
+    "docker:down": "docker compose down",
+    "docker:rs": "bun docker:down && bun docker:up",
+    "k6": "K6_WEB_DASHBOARD=true K6_WEB_DASHBOARD_EXPORT=html-report.html k6 run rinha-test/rinha.js"
   },
   "dependencies": {
-    "elysia": "latest"
+    "@elysiajs/swagger": "^1.3.1",
+    "elysia": "latest",
+    "postgres": "^3.4.7",
+    "redis": "^5.6.0"
   },
   "devDependencies": {
     "bun-types": "latest"
