@@ -12,17 +12,19 @@ export default class PostgresPaymentRepository implements PaymentRepository {
   }
 
   async save(payment: Payment): Promise<void> {
-      await this.sql.begin(async (tx) => {
-        await tx`INSERT INTO payments (id, amount, processor) 
+      await this.sql`
+        INSERT INTO payments (id, amount, processor) 
         VALUES (${payment.id}, ${payment.amount}, ${payment.processor})`;
-  
-        await tx`INSERT INTO payment_summaries (processor, summary_date, total_requests, total_amount)
+
+      await this.sql`
+        INSERT INTO payment_summaries (processor, summary_date, total_requests, total_amount)
                   VALUES (${payment.processor}, date_trunc('hour', now()), 1, ${payment.amount})
                   ON CONFLICT (processor, summary_date)
                   DO UPDATE SET
                     total_requests = payment_summaries.total_requests + 1,
                     total_amount = payment_summaries.total_amount + EXCLUDED.total_amount;`;
-      });
+  
+
     }
 
   async purgePayments(): Promise<void> {
