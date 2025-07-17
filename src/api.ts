@@ -6,6 +6,8 @@ import GetPaymentSummaryUseCase from "./core/application/useCase/get-payment-sum
 import PostgresPaymentRepository from "./infrastructure/database/postgres-payment.repository";
 import { paymentsController } from "./infrastructure/http/controllers/paymentsController";
 import { createClient, RedisClientType } from "redis";
+import PurgePaymentsUseCase from "./core/application/useCase/purge-payments.use-case";
+import { adminController } from "./infrastructure/http/controllers/adminController";
 
 const redis = createClient({ url: 'redis://redis:6379' }) as RedisClientType;
 
@@ -24,8 +26,10 @@ const sql = postgres({
 const paymentRepository = new PostgresPaymentRepository(sql);
 const publishPaymentUseCase = new PublishPaymentUseCase(publisher);
 const getPaymentSummaryUseCase = new GetPaymentSummaryUseCase(paymentRepository);
+const purgePaymentsUseCase = new PurgePaymentsUseCase(paymentRepository);
 
 const app = new Elysia()
+    .use(adminController(purgePaymentsUseCase))
     .use(paymentsController(publishPaymentUseCase, getPaymentSummaryUseCase))
     .listen(3000);
 

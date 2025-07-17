@@ -9,7 +9,7 @@ services:
       resources:
         limits:
           cpus: "0.10"
-          memory: "30MB"
+          memory: "10MB"
 
   nginx:
     image: nginx:1.25-alpine
@@ -27,7 +27,7 @@ services:
       resources:
         limits:
           cpus: "0.10"
-          memory: "30MB"
+          memory: "10MB"
 
   api1:
     build:
@@ -83,7 +83,7 @@ services:
       resources:
         limits:
           cpus: "0.30"
-          memory: "80MB"
+          memory: "120MB"
 
   db:
     image: postgres:15

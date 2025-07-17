@@ -24,4 +24,12 @@ export default class PostgresPaymentRepository implements PaymentRepository {
                     total_amount = payment_summaries.total_amount + EXCLUDED.total_amount;`;
       });
     }
+
+  async purgePayments(): Promise<void> {
+    await this.sql.begin(async (tx) => {
+      await tx`TRUNCATE TABLE payment_summaries;`
+
+      await tx`TRUNCATE TABLE payments;`
+    })
+  }
 }
