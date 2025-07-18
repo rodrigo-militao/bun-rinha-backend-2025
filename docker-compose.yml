@@ -9,7 +9,7 @@ services:
       resources:
         limits:
           cpus: "0.10"
-          memory: "10MB"
+          memory: "15MB"
 
   nginx:
     image: nginx:1.25-alpine
@@ -27,7 +27,7 @@ services:
       resources:
         limits:
           cpus: "0.10"
-          memory: "10MB"
+          memory: "15MB"
 
   api1:
     build:
@@ -105,7 +105,7 @@ services:
       resources:
         limits:
           cpus: "0.30"
-          memory: "90MB"
+          memory: "80MB"
 
 networks:
   backend:

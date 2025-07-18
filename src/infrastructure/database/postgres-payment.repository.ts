@@ -12,9 +12,10 @@ export default class PostgresPaymentRepository implements PaymentRepository {
   }
 
   async save(payment: Payment): Promise<void> {
-      await this.sql`
-        INSERT INTO payments (id, amount, processor) 
-        VALUES (${payment.id}, ${payment.amount}, ${payment.processor})`;
+      // In this case, its not necessary.
+      // await this.sql`
+      //   INSERT INTO payments (id, amount, processor) 
+      //   VALUES (${payment.id}, ${payment.amount}, ${payment.processor})`;
 
       await this.sql`
         INSERT INTO payment_summaries (processor, summary_date, total_requests, total_amount)
