@@ -27,7 +27,19 @@ export default class RedisSubscriber {
     }
   }
 
-  async subscribe(channel: string, handler: (message: string) => Promise<void>) {
-    await this.subscriber.subscribe(channel, handler);
+  async subscribe(queueName: string, handler: (message: string) => Promise<void>) {
+    console.log(`Worker listening on queue "${queueName}"...`);
+    while (true) {
+      try {
+        const result = await this.client.blPop(queueName, 0);
+
+        if (result) {
+          await handler(result.element);
+        }
+      } catch (error) {
+        console.error('Worker loop error, restarting in 5 seconds:', error);
+        await new Promise(resolve => setTimeout(resolve, 5000));
+      }
+    }
   }
 }

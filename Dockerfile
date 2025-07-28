@@ -22,6 +22,8 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/bun.lock ./bun.lock
 COPY --from=builder /app/.env ./.env 
 
+RUN mkdir -p /tmp/app-sockets
+
 EXPOSE 3000
 
 CMD ["bun", "dist/api.js"]

@@ -8,7 +8,7 @@
     "docker:up": "docker compose up --build",
     "docker:down": "docker compose down",
     "docker:rs": "bun docker:down && bun docker:up",
-    "k6": "K6_WEB_DASHBOARD=true K6_WEB_DASHBOARD_EXPORT=html-report.html k6 run rinha-test/rinha.js"
+    "k6": "K6_WEB_DASHBOARD=true K6_WEB_DASHBOARD_EXPORT=k6-report.html k6 run rinha-test-2/rinha.js"
   },
   "dependencies": {
     "@elysiajs/swagger": "^1.3.1",

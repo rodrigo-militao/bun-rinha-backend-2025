@@ -20,6 +20,7 @@ export default class RedisPaymentPublisher implements PaymentPublisher {
   }
 
   async publish(payload: { amount: number; correlationId: string }) {
-    await this.client.publish('pagamentos', JSON.stringify(payload));
+    await this.client.lPush('pagamentos', JSON.stringify(payload))
+    // await this.client.publish('pagamentos', JSON.stringify(payload));
   }
 }
