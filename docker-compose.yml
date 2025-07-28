@@ -42,6 +42,7 @@ services:
     expose:
       - '3000'
     environment:
+      - LISTEN_ADDR=3000
       - REDIS_URL=redis://redis:6379
       - PAYMENT_PROCESSOR_URL_DEFAULT=http://payment-processor-default:8080
       - PAYMENT_PROCESSOR_URL_FALLBACK=http://payment-processor-fallback:8080
@@ -63,48 +64,6 @@ services:
     command: bun dist/worker.js
     environment:
       - APP_INSTANCE_ID=app2
-
-  # worker:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   command: bun dist/worker.js
-  #   networks:
-  #     - backend
-  #     - payment-processor
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     - PAYMENT_PROCESSOR_URL_DEFAULT=http://payment-processor-default:8080
-  #     - PAYMENT_PROCESSOR_URL_FALLBACK=http://payment-processor-fallback:8080
-  #     - REDIS_URL=redis://redis:6379
-  #   deploy:
-  #     resources:
-  #       limits:
-  #         cpus: "0.30"
-  #         memory: "120MB"
-
-  # db:
-  #   image: postgres:15
-  #   ports:
-  #     - "5432:5432"
-  #   restart: always
-  #   environment:
-  #     POSTGRES_PASSWORD: postgres
-  #     POSTGRES_DB: payments
-  #     PGDATA: /var/lib/postgresql/data/pgdata
-  #   volumes:
-  #     - pgdata:/var/lib/postgresql/data/pgdata
-  #     - ./db/init:/docker-entrypoint-initdb.d
-  #     - ./db/conf/postgresql.conf:/etc/postgresql/postgresql.conf:ro
-  #   networks:
-  #     - backend
-  #   shm_size: "64MB"
-  #   deploy:
-  #     resources:
-  #       limits:
-  #         cpus: "0.30"
-  #         memory: "80MB"
 
 networks:
   backend:

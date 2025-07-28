@@ -6,7 +6,7 @@ import { RedisPaymentRepository } from './infrastructure/database/redis-payment.
 const URL_DEFAULT = Bun.env.PAYMENT_PROCESSOR_URL_DEFAULT ?? 'http://payment-processor-default:8080';
 const URL_FALLBACK = Bun.env.PAYMENT_PROCESSOR_URL_FALLBACK ?? 'http://payment-processor-fallback:8080';
 
-const redis = createClient({ url: 'redis://redis:6379' }) as RedisClientType;
+const redis = createClient({ url: Bun.env.REDIS_URL ?? 'redis://redis:6379' }) as RedisClientType;
 
 const paymentRepository = new RedisPaymentRepository(redis);
 const processPaymentUseCase = new ProcessPaymentUseCase(paymentRepository, URL_DEFAULT, URL_FALLBACK);

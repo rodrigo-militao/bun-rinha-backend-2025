@@ -8,7 +8,7 @@ import PurgePaymentsUseCase from "./core/application/useCase/purge-payments.use-
 import { adminController } from "./infrastructure/http/controllers/adminController";
 import { RedisPaymentRepository } from "./infrastructure/database/redis-payment.repository";
 
-const redis = createClient({ url: 'redis://redis:6379' }) as RedisClientType;
+const redis = createClient({ url: Bun.env.REDIS_URL ?? 'redis://redis:6379' }) as RedisClientType;
 
 const publisher = new RedisPaymentPublisher(redis);
 await publisher.connect();
@@ -22,7 +22,7 @@ const purgePaymentsUseCase = new PurgePaymentsUseCase(paymentRepository);
 const app = new Elysia()
     .use(adminController(purgePaymentsUseCase))
     .use(paymentsController(publishPaymentUseCase, getPaymentSummaryUseCase))
-    .listen(3000);
+    .listen(Bun.env.LISTEN_ADDR ?? 3000);
 
 console.log(
   `🦊 API is running at ${app.server?.hostname}:${app.server?.port}`
